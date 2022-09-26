@@ -9,7 +9,7 @@ from sensor_msgs.msg import Image
 from PIL import Image as PILImage
 
 from cv_bridge import CvBridge, CvBridgeError
-
+import cv2
 
 class ImgSaver:
     def __init__(self, outpath, rgb=True) -> None:
@@ -32,11 +32,8 @@ class ImgSaver:
             imshape = cv2_img.shape
             if len(imshape) > 2:
                 # if rgb
-                if imshape[2] > 3: 
-                    # discard the alpha channel (if any)
-                    cv2_img = cv2_img[:, :, :3]
                 # bgr -> rgb encoding
-                cv2_img = cv2_img[:, :, [2, 1, 0]]
+                cv2_img = cv2_img[:, :, [2, 1, 0, 3]]
             img_pil = PILImage.fromarray(cv2_img)
             img_pil.save(fname)
 
